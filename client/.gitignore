@@ -1,0 +1,8 @@
+
+
+# Dependencies and builds
+node_modules/
+
+# Env files
+.env*
+
