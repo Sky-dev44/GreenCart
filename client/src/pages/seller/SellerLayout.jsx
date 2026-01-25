@@ -9,7 +9,7 @@ const SellerLayout = () => {
     { name: "Add Product", path: "/seller", icon: assets.add_icon },
     {
       name: "Product List",
-      path: "/seller/proudct-list",
+      path: "/seller/product-list",
       icon: assets.product_list_icon,
     },
     { name: "Orders", path: "/seller/orders", icon: assets.order_icon },
@@ -42,7 +42,7 @@ const SellerLayout = () => {
       </div>
 
       <div className="flex">
-        <div className="md:w-64 w-16 border-r h-137.5 text-base border-gray-300 pt-4 flex flex-col transition-all duration-300">
+        <div className="md:w-64 w-16 border-r h-[95vh].5 text-base border-gray-300 pt-4 flex flex-col">
           {sidebarLinks.map((item) => (
             <NavLink
               to={item.path}
