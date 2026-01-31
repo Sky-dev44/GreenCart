@@ -1,6 +1,6 @@
 //Add address: /api/address/add
 
-import Addrress from "../models/address";
+import Addrress from "../models/Address.js";
 
 export const addAddress = async (req, res) => {
   try {
