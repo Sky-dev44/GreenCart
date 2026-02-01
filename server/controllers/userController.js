@@ -98,9 +98,11 @@ export const login = async (req, res) => {
 
 export const isAuth = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const user = await User.findById(req.userId).select("-password");
 
-    const user = await User.findById(userId).select("-password"); //exclude password
+    if (!user) {
+      return res.json({ success: false });
+    }
 
     return res.json({
       success: true,
