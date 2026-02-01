@@ -6,21 +6,28 @@ export const placeOrderCOD = async (req, res) => {
   try {
     const { userId, items, address } = req.body;
 
-    if (!address || items.length === 0) {
-      return res.json({
+    if (!address || !items || items.length === 0) {
+      return res.status(400).json({
         success: false,
         message: "Invalid Data",
       });
     }
 
-    //calculate amount using items
-    let amount = await items.reduce(async (acc, item) => {
+    // calculate amount using items
+    let amount = 0;
+    for (const item of items) {
       const product = await Product.findById(item.product);
-      return (await acc) + product.offerPrice * items.quantity;
-    }, 0);
+      if (!product) {
+        return res.status(404).json({
+          success: false,
+          message: `Product not found: ${item.product}`,
+        });
+      }
+      amount += product.offerPrice * item.quantity;
+    }
 
-    //add tax charge 2%
-    amount += Math.floor(amount * 0.02);
+    // add tax charge 2%
+    amount += amount * 0.02;
 
     await Order.create({
       userId,
@@ -35,7 +42,7 @@ export const placeOrderCOD = async (req, res) => {
       message: "Order Placed Successfully",
     });
   } catch (error) {
-    return res.json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -46,7 +53,7 @@ export const placeOrderCOD = async (req, res) => {
 
 export const getUserOrders = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.query;
 
     const orders = await Order.find({
       userId,
